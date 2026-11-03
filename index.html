@@ -40,11 +40,16 @@ section{position:relative}
 .split .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.12em;margin-bottom:-.12em}
 .split .w>span{display:inline-block;transform:translateY(110%) rotate(4deg);transition:transform 1.1s var(--ease);transition-delay:calc(var(--i)*55ms)}
 .split.in .w>span{transform:none}
-.clip{clip-path:inset(0 0 100% 0);transition:clip-path 1.5s var(--ease)}
-.clip.in{clip-path:inset(0 0 0 0)}
+.clip{position:relative;overflow:hidden;--cv:var(--cream)}
+.dark .clip{--cv:var(--forest)}
+.clip::after{content:"";position:absolute;inset:-1px;background:var(--cv);transform-origin:top;transition:transform 1.4s var(--ease);z-index:2;pointer-events:none}
+.clip.in::after{transform:scaleY(0)}
 .clip img{transform:scale(1.25);transition:transform 2s var(--ease)}
 .clip.in img{transform:scale(1)}
 
+/* safety net: reveal anything the observer missed */
+const sweep=()=>$$('.rv:not(.in),.split:not(.in),.clip:not(.in),.bar:not(.in),.steps:not(.in)').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<innerHeight*.92&&r.bottom>0)el.classList.add('in')});
+addEventListener('scroll',sweep,{passive:true});setInterval(sweep,800);
 /* preloader */
 #pre{position:fixed;inset:0;z-index:999;background:var(--forest);display:grid;place-items:center;transition:transform 1.2s var(--ease) .1s}
 #pre.done{transform:translateY(-100%)}
@@ -419,14 +424,14 @@ footer .legal{border-top:1px solid rgba(246,241,231,.12);padding-top:26px;max-wi
     <button class="tab" data-t="1">Pulse <small>vibrant energy</small></button>
     <button class="tab" data-t="2">Pause <small>quiet restore</small></button>
   </div>
-  <div class="panel on" data-p="0"><div class="pics"><div><img src="img/banquet.jpg" alt="" loading="lazy"></div><div><img src="img/resto.jpg" alt="" loading="lazy"></div></div>
+  <div class="panel on" data-p="0"><div class="pics"><div><img src="img/banquet.jpg" alt=""></div><div><img src="img/resto.jpg" alt=""></div></div>
     <div><div class="mood">Welcome + Gather</div><h3>Parley</h3><ul>
       <li>Concierge<em>effortless every day</em></li><li>Laughter &amp; Social Club<em>lasting memories</em></li><li>Festive Hub<em></em></li>
       <li>Pre-function &amp; Banquet<em></em></li><li>Restaurant<em></em></li><li>Convenience Store<em></em></li><li>Book Nook<em>cosy reading</em></li></ul></div></div>
-  <div class="panel" data-p="1"><div class="pics"><div><img src="img/gym2.jpg" alt="" loading="lazy"></div><div><img src="img/squash.jpg" alt="" loading="lazy"></div></div>
+  <div class="panel" data-p="1"><div class="pics"><div><img src="img/gym2.jpg" alt=""></div><div><img src="img/squash.jpg" alt=""></div></div>
     <div><div class="mood">Engage + Connect</div><h3>Pulse</h3><ul>
       <li>Gym<em>state-of-the-art</em></li><li>Open Gym<em></em></li><li>Squash Court<em></em></li><li>Zumba / Aerobics<em></em></li><li>Indoor Play Arena<em></em></li><li>Pet Area<em>for furry companions</em></li></ul></div></div>
-  <div class="panel" data-p="2"><div class="pics"><div><img src="img/yoga.jpg" alt="" loading="lazy"></div><div><img src="img/spa.jpg" alt="" loading="lazy"></div></div>
+  <div class="panel" data-p="2"><div class="pics"><div><img src="img/yoga.jpg" alt=""></div><div><img src="img/spa.jpg" alt=""></div></div>
     <div><div class="mood">Slow + Restore</div><h3>Pause</h3><ul>
       <li>Yoga &amp; Meditation Room<em></em></li><li>Spa &amp; Wellness<em></em></li><li>Salon<em></em></li><li>Senior Lounge<em></em></li><li>Art Room<em></em></li><li>Knowledge Centre<em></em></li><li>Kids Arena<em></em></li></ul></div></div>
 </div></section>
@@ -524,7 +529,7 @@ footer .legal{border-top:1px solid rgba(246,241,231,.12);padding-top:26px;max-wi
 </div></footer>
 
 <a href="#enquire" class="mobbar" data-go>Enquire now</a>
-<div id="lb"><img alt=""></div>
+<div id="lb"><img alt="Floor plan enlarged" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="></div>
 
 <script>
 (()=>{
@@ -652,6 +657,9 @@ $('#form').addEventListener('submit',e=>{
   $('#ok').style.display='block';f.querySelector('button').style.display='none';
 });
 
+/* safety net: reveal anything the observer missed */
+const sweep=()=>$$('.rv:not(.in),.split:not(.in),.clip:not(.in),.bar:not(.in),.steps:not(.in)').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<innerHeight*.92&&r.bottom>0)el.classList.add('in')});
+addEventListener('scroll',sweep,{passive:true});setInterval(sweep,800);
 /* preloader */
 addEventListener('load',()=>setTimeout(()=>{
   $('#pre').classList.add('done');document.body.classList.remove('lock');
